@@ -1,6 +1,8 @@
 package array
 
-import "errors"
+import (
+	"errors"
+)
 
 /*
 * 实现自动扩容
@@ -40,4 +42,22 @@ func (this *Array) Find(idx uint) (int, error) {
 		return 0, errors.New("out of range")
 	}
 	return this.data[idx], nil
+}
+
+func (this *Array) InsertToIdx(idx uint, v int) error {
+	if this.Len() == uint(cap(this.data)) {
+		return errors.New("full")
+	}
+	if idx != this.length && this.isIndexOutOfRange(idx) {
+		return errors.New("out of range")
+	}
+
+	for i := this.length; i > idx; i-- {
+		this.data[i] = this.data[i-1]
+	}
+
+	this.data[idx] = v
+	this.length++
+
+	return nil
 }
